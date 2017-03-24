@@ -1,12 +1,17 @@
 .folder-container {
   line-height: 1em;
+  user-select: none;
 
-  img {
+  .image {
     vertical-align: middle;
-    width: 1em;
-    height: 1em;
+    width: 32px;
+    height: 32px;
+    text-align: right;
+    background-image: url("../../assets/_images/folder.png");
+    display: inline-block;
+    color: blue;
+    cursor: pointer;
   }
-
 
 }
 

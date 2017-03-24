@@ -1,12 +1,12 @@
 <div *ngIf="folder != undefined" >
 
 <div class="folder-container">
-  <img src="../../assets/_images/folder.png"/>
-  <span (click)="expanded=!expanded">{{folder.name}}</span>
+  <span class="image"  (click)="onFolderImageClick()">{{expandSign}}</span>
+  <span>{{folder.name}}</span>
 </div>
 <ul *ngIf="expanded">
   <li *ngFor="let child of folder.children">
-    <folder *ngIf="child.children != undefined" [id]="child._id"></folder>
+    <folder *ngIf="child.children != undefined" [expandable]="expandable" [id]="child._id"></folder>
   </li>
 </ul>
 
