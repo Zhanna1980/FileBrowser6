@@ -1,21 +1,35 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Folder} from "./folder";
 import {File} from "./file";
+import {Http, Response} from "@angular/http";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class FileSystemService {
 
-  constructor () { }
+  private readonly OWNER = "Zhanna";
+  private readonly apiUrl = "http://hosting.webis.co.il:8085/api";
 
-  getItemById (id?: number) {
+  constructor (private http: Http) { }
+
+  getItemById (id?: string) {
+    return this.http.get(this.apiUrl + '/items/get/' + this.OWNER + '/' + (id !== undefined ? id : ''))
+      .map((data: Response) => { return data.json(); })
+      .catch((err: Response) => {
+        return Observable.throw(err)
+      });
 
   }
 
-  createItem (item: File | Folder, parentId: number) {
-
+  createItem (parentId: string, type: string, name: string) {
+    return this.http.post(this.apiUrl + '/items/create/', { parentId: parentId, type: type, name: name, owner: this.OWNER })
+      .map((data: Response) => { return data.json(); })
+      .catch((err: Response) => {
+        return Observable.throw(err);
+      });
   }
 
-  deleteItem (id: number) {
+  deleteItem (id: string) {
 
   }
 
@@ -31,7 +45,8 @@ export class FileSystemService {
 
   }
 
-  setCurrentId (id: number) {
+  setCurrentId (id: string) {
 
   }
 }
+

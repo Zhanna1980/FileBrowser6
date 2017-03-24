@@ -1,0 +1,18 @@
+
+  button{
+    background-color: blue;
+    height: 100%;
+    width: 50%;
+    margin:0;
+    border: none;
+    font-size: 1em;
+    font-weight: 300;
+    cursor: pointer;
+    box-sizing: border-box;
+
+
+    &:active {
+      border: 2px solid black;
+    }
+  }
+

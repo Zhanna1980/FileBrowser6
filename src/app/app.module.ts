@@ -12,6 +12,7 @@ import { HistoryComponent } from './history/history.component';
 import { PathComponent } from './path/path.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import { FileEditorComponent } from './file-editor/file-editor.component';
+import {FileSystemService} from "./file-system.service";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { FileEditorComponent } from './file-editor/file-editor.component';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [FileSystemService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,7 @@
 export interface Folder {
-  id: number,
+  _id: string,
   name: string,
   children: Array<File | Folder>,
-  readonly: boolean,
-  shared: boolean
+  readonly?: boolean,
+  shared?: boolean
 }
