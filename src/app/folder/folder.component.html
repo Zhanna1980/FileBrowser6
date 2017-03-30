@@ -2,7 +2,7 @@
 
 <div class="folder-container">
   <span class="image"  (click)="onFolderImageClick()">{{expandSign}}</span>
-  <span>{{folder.name}}</span>
+  <span (click)="onFolderNameClick()">{{folder.name}}</span>
 </div>
 <ul *ngIf="expanded">
   <li *ngFor="let child of folder.children">

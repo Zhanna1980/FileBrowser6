@@ -13,6 +13,8 @@ import { PathComponent } from './path/path.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 import { FileEditorComponent } from './file-editor/file-editor.component';
 import {FileSystemService} from "./file-system.service";
+import {HistoryService} from "./history.service";
+import {AppService} from "./app-service.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import {FileSystemService} from "./file-system.service";
     FormsModule,
     HttpModule
   ],
-  providers: [FileSystemService],
+  providers: [FileSystemService, HistoryService, AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

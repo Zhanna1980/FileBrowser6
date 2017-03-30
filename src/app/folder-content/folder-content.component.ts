@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Folder} from "../folder";
+import {AppService} from "../app-service.service";
+import {FileSystemService} from "../file-system.service";
+import {HistoryService} from "../history.service";
+import {File} from "../file";
 
 @Component({
   selector: 'folder-content',
@@ -7,9 +12,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FolderContentComponent implements OnInit {
 
-  constructor() { }
+  currentItem: Folder | File;
+
+  constructor(private fileSystemService: FileSystemService, private history: HistoryService, private appService: AppService ) { }
 
   ngOnInit() {
+    this.appService.onCurrentItemChanged.subscribe((item: Folder | File)=> {
+      this.currentItem = item;
+      console.log(this.currentItem.name);
+    });
   }
 
 }
