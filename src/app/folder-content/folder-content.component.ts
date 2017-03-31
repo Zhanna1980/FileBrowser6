@@ -19,7 +19,6 @@ export class FolderContentComponent implements OnInit {
   ngOnInit() {
     this.appService.onCurrentItemChanged.subscribe((item: Folder | File)=> {
       this.currentItem = item;
-      console.log(this.currentItem.name);
     });
   }
 

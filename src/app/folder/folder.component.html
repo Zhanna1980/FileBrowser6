@@ -1,13 +1,12 @@
 <div *ngIf="folder != undefined" >
-
-<div class="folder-container">
-  <span class="image"  (click)="onFolderImageClick()">{{expandSign}}</span>
-  <span (click)="onFolderNameClick()">{{folder.name}}</span>
-</div>
-<ul *ngIf="expanded">
+  <div *ngIf="shouldShowName == true" class="folder-container">
+    <span class="image"  (click)="onFolderImageClick($event)">{{expandSign}}</span>
+    <span (click)="onFolderNameClick($event)">{{folder.name}}</span>
+  </div>
+  <ul *ngIf="expanded || !shouldShowName">
   <li *ngFor="let child of folder.children">
-    <folder *ngIf="child.children != undefined" [expandable]="expandable" [id]="child._id"></folder>
+  <folder *ngIf="child.children != undefined" [shouldShowName]="true" [folder]="child" [isInTree]="isInTree" [class.contentFolder]="!isInTree"></folder>
+  <file *ngIf="child.children == undefined && isInTree == false" [file]="child"></file>
   </li>
-</ul>
-
+  </ul>
 </div>
