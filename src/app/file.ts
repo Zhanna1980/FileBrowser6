@@ -1,7 +1,8 @@
 export interface File {
-  id: number,
+  _id: string,
   name: string,
   content: string,
-  readonly: boolean,
-  shared: boolean
+  owner?: string,
+  readonly?: boolean,
+  shared?: boolean
 }

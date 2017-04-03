@@ -1,4 +1,4 @@
-<div *ngIf="file != undefined" class="file-container">
+<div *ngIf="file != undefined" class="file-container" (click)="openFileEditor()">
   <span class="image"></span>
   <span>{{file.name}}</span>
 </div>

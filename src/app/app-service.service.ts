@@ -7,9 +7,14 @@ import {File} from "./file";
 export class AppService {
 
   onCurrentItemChanged: Subject<Folder | File>;
+  isFileEditorActive = false;
 
   constructor() {
     this.onCurrentItemChanged = new Subject();
   }
+
+  // get isFileEditorOpened(): boolean {
+  //   return this.isFileEditorActive;
+  // }
 
 }

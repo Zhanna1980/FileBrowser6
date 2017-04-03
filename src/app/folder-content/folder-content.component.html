@@ -1,4 +1,4 @@
-<div class="content-container">
-  <!--<folder [expandable]="false"></folder>-->
-  <folder [folder]="currentItem" [shouldShowName]="false" [isInTree]="false"></folder>
+<div class="content-container" *ngIf="currentFolder" (contextmenu)="onContextMenu($event)">
+  <folder *ngIf="!isFileEditorActive" [folder]="currentFolder" [shouldShowName]="false" [isInTree]="false"></folder>
+  <file-editor *ngIf="isFileEditorActive" [file]="currentFile"></file-editor>
 </div>

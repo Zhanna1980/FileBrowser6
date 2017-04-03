@@ -1,0 +1,33 @@
+:host {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.menuContainer {
+  display: block;
+  position: absolute;
+  background-color: #fff;
+  width: 120px;
+  padding: 0px;
+  margin: 0px;
+  box-shadow: 2px 2px 7px rgba(0,0,0,0.8);
+  font-size: 20px;
+  color: blue;
+  line-height: 1em;
+  border: outset dodgerblue 2px;
+  z-index: 10;
+}
+
+.menuItem {
+  font-size: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #e1e1e1;
+
+
+  &:hover {
+    background-color: #e1e1e1;
+    cursor: pointer;
+  }
+}

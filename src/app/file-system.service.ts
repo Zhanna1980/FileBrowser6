@@ -58,7 +58,21 @@ export class FileSystemService {
   }
 
   updateItem (item: File | Folder) {
-
+    let objectToSend = {
+      "_id": item._id,
+      "name": item.name,
+      "owner": item.owner,
+      "content": (item as File).content,
+      "children": (item as Folder).children,
+      "__v": 0
+    };
+    return this.http.post(this.apiUrl + '/items/update/' + item._id, objectToSend)
+      .subscribe((data: Response) => {
+        const response = data.json();
+        this.onGotItem.next(response);
+      }, (err) => {
+        console.log(err.message);
+      });
   }
 
   onChange () {

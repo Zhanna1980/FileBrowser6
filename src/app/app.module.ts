@@ -15,6 +15,7 @@ import { FileEditorComponent } from './file-editor/file-editor.component';
 import {FileSystemService} from "./file-system.service";
 import {HistoryService} from "./history.service";
 import {AppService} from "./app-service.service";
+import {ContextMenuService} from "./context-menu.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import {AppService} from "./app-service.service";
     FormsModule,
     HttpModule
   ],
-  providers: [FileSystemService, HistoryService, AppService],
+  providers: [FileSystemService, HistoryService, AppService, ContextMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

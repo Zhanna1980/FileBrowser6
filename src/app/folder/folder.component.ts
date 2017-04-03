@@ -32,10 +32,12 @@ export class FolderComponent implements OnInit, OnDestroy {
 
   onFolderImageClick(event: Event) {
     event.stopPropagation();
-    this.expanded=!this.expanded;
-    this.expandSign = this.expanded ? "-" : "+";
-    if (this.isInTree && this.expanded){
-      this.getFolder();
+    if (this.isInTree) {
+      this.expanded=!this.expanded;
+      this.expandSign = this.expanded ? "-" : "+";
+      if (this.expanded) {
+        this.getFolder();
+      }
     } else {
       this.onFolderNameClick(event);
     }
@@ -48,15 +50,23 @@ export class FolderComponent implements OnInit, OnDestroy {
     });
   }
 
+  onContextMenu(event) {
+    event.stopPropagation();
+    console.log(event.currentTarget);
+    return false;
+  }
+
   getFolder(callback?: Function) {
     this.fileSystemService.getItemById(this.folder._id);
     this.onGotFolderSubscription = this.fileSystemService.onGotItem.subscribe((response) => {
       if (response.success == true && this.folder._id === response.item._id) {
         this.folder = response.item;
         if (callback) {
-          callback();}
+          callback();
+        }
+        this.onGotFolderSubscription.unsubscribe();
       }
-    })
+    });
   }
 
   ngOnDestroy() {

@@ -1,3 +1,7 @@
-<p>
-  file-editor works!
-</p>
+<div class="fileEditorContainer">
+  <textarea class="editFile" [(ngModel)]="file.content" autofocus = "autofocus"></textarea>
+  <div class="editFileButtonsLayer">
+    <button class="btnFileEditor" (click)="cancelEditing()">Cancel</button>
+    <button class="btnFileEditor" (click)="saveEditedContent()">Save</button>
+  </div>
+</div>

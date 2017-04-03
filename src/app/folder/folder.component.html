@@ -1,5 +1,5 @@
-<div *ngIf="folder != undefined" >
-  <div *ngIf="shouldShowName == true" class="folder-container">
+<div *ngIf="folder != undefined">
+  <div *ngIf="shouldShowName == true" class="folder-container" (contextmenu)="onContextMenu($event)">
     <span class="image"  (click)="onFolderImageClick($event)">{{expandSign}}</span>
     <span (click)="onFolderNameClick($event)">{{folder.name}}</span>
   </div>
