@@ -5,6 +5,8 @@ import {FileSystemService} from "../file-system.service";
 import {HistoryService} from "../history.service";
 import {File} from "../file";
 import {Subscription} from "rxjs";
+import {ContextMenuService} from "../context-menu.service";
+import {MenuData} from "../menu-data";
 
 @Component({
   selector: 'folder-content',
@@ -17,7 +19,8 @@ export class FolderContentComponent implements OnInit, OnDestroy {
   currentFile: File;
   private onGotCurrentItem: Subscription;
 
-  constructor(private fileSystemService: FileSystemService, private history: HistoryService, private appService: AppService ) { }
+  constructor(private fileSystemService: FileSystemService, private history: HistoryService, private appService: AppService,
+  private contextMenuService: ContextMenuService) { }
 
   ngOnInit() {
     this.onGotCurrentItem = this.appService.onCurrentItemChanged.subscribe((item: Folder | File)=> {
@@ -42,8 +45,28 @@ export class FolderContentComponent implements OnInit, OnDestroy {
   }
 
   onContextMenu(event) {
-    console.log("in content");
+    event.stopPropagation();
+    this.contextMenuService.showMenu(this.setContextMenuData(event));
+    return false;
   }
+
+  setContextMenuData(event): MenuData {
+      return {
+        menuEntries: [{entryName: "New folder", entryFunction: () => this.newFolder()},
+          {entryName: "New file", entryFunction: () => this.newFile()}
+        ],
+        menuPosition: {left: event.clientX + "px", top: event.clientY + "px"}
+      }
+  }
+
+  newFolder() {
+    console.log(this.currentFolder);
+  }
+
+  newFile() {
+
+  }
+
 
   ngOnDestroy() {
     if (this.onGotCurrentItem) {

@@ -1,5 +1,5 @@
-<div class="menuContainer" *ngIf="isMenuActive" [ngStyle]="style">
+<div class="menuContainer" *ngIf="isMenuActive" [ngStyle]="menuData.menuPosition">
   <ul >
-    <li class="menuItem" *ngFor="let menuItem of menu"><a (click)="menuItem.callback()">{{menuItem.name}}</a></li>
+    <li class="menuItem" *ngFor="let menuEntry of menuData.menuEntries"><a (click)="menuEntry.entryFunction()">{{menuEntry.entryName}}</a></li>
   </ul>
 </div>

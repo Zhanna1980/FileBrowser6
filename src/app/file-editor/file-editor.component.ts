@@ -9,15 +9,12 @@ import {Subscription} from "rxjs";
   templateUrl: './file-editor.component.html',
   styleUrls: ['./file-editor.component.scss']
 })
-export class FileEditorComponent implements OnInit, OnDestroy {
+export class FileEditorComponent implements OnDestroy {
   @Input() file: File;
   onGotFileSubscription: Subscription;
 
   constructor(private fileSystemService: FileSystemService, private appService: AppService) {
 
-  }
-
-  ngOnInit() {
   }
 
   cancelEditing() {
@@ -33,6 +30,11 @@ export class FileEditorComponent implements OnInit, OnDestroy {
         this.onGotFileSubscription.unsubscribe();
       }
     })
+  }
+
+  onContextMenu(event) {
+    event.stopPropagation();
+    return false;
   }
 
   ngOnDestroy() {

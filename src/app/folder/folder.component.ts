@@ -4,6 +4,8 @@ import {Folder} from "../folder";
 import {HistoryService} from "../history.service";
 import {AppService} from "../app-service.service";
 import {Subscription} from "rxjs";
+import {ContextMenuService} from "../context-menu.service";
+import {MenuData, MenuEntry} from "../menu-data";
 
 @Component({
   selector: 'folder',
@@ -19,8 +21,13 @@ export class FolderComponent implements OnInit, OnDestroy {
   private expandSign: string = "";
   private onGotFolderSubscription: Subscription;
 
+  private readonly newFolderMenuEntry: MenuEntry;
+  private readonly newFileMenuEntry: MenuEntry;
+  private readonly renameMenuEntry: MenuEntry;
+  private readonly deleteMenuEntry: MenuEntry;
 
-  constructor(private fileSystemService: FileSystemService, private appService: AppService ) {
+
+  constructor(private fileSystemService: FileSystemService, private appService: AppService, private contextMenuService: ContextMenuService) {
 
   }
 
@@ -33,6 +40,7 @@ export class FolderComponent implements OnInit, OnDestroy {
   onFolderImageClick(event: Event) {
     event.stopPropagation();
     if (this.isInTree) {
+      this.contextMenuService.hideMenu();
       this.expanded=!this.expanded;
       this.expandSign = this.expanded ? "-" : "+";
       if (this.expanded) {
@@ -45,6 +53,7 @@ export class FolderComponent implements OnInit, OnDestroy {
 
   onFolderNameClick(event: Event) {
     event.stopPropagation();
+    this.contextMenuService.hideMenu();
     this.getFolder(() => {
       this.appService.onCurrentItemChanged.next(this.folder);
     });
@@ -52,8 +61,48 @@ export class FolderComponent implements OnInit, OnDestroy {
 
   onContextMenu(event) {
     event.stopPropagation();
-    console.log(event.currentTarget);
+    this.contextMenuService.showMenu(this.setContextMenuData(event));
     return false;
+  }
+
+  setContextMenuData(event): MenuData {
+    const menuPosition = {
+      left: event.clientX + "px",
+      top: event.clientY + "px"
+    };
+    if (this.folder.name == "root") {
+      return {
+        menuEntries: [{entryName: "New folder", entryFunction: () => this.newFolder()},
+          {entryName: "New file", entryFunction: () => this.newFile()}
+        ],
+        menuPosition: menuPosition
+      }
+    } else {
+      return {
+            menuEntries: [{entryName: "New folder", entryFunction: () => this.newFolder()},
+              {entryName: "New file", entryFunction: () => this.newFile()},
+              {entryName: "Rename", entryFunction: () => this.rename()},
+              {entryName: "Delete", entryFunction: () => this.delete()}
+            ],
+              menuPosition: menuPosition
+          }
+    }
+  }
+
+  newFolder() {
+    console.log(this.folder);
+  }
+
+  newFile() {
+
+  }
+
+  rename() {
+
+  }
+
+  delete() {
+
   }
 
   getFolder(callback?: Function) {

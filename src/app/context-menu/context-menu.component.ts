@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {MenuData} from "../menu-data";
+import {ContextMenuService} from "../context-menu.service";
 
 @Component({
   selector: 'context-menu',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContextMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private contextMenuService: ContextMenuService) { }
 
   ngOnInit() {
+  }
+
+  get isMenuActive() {
+    return this.contextMenuService.isMenuActive;
+  }
+
+  get menuData() {
+    return this.contextMenuService.menuData;
   }
 
 }

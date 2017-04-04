@@ -1,4 +1,4 @@
-<div class="fileEditorContainer">
+<div class="fileEditorContainer" (contextmenu)="onContextMenu($event)">
   <textarea class="editFile" [(ngModel)]="file.content" autofocus = "autofocus"></textarea>
   <div class="editFileButtonsLayer">
     <button class="btnFileEditor" (click)="cancelEditing()">Cancel</button>

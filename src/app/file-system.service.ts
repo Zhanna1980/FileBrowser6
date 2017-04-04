@@ -15,15 +15,6 @@ export class FileSystemService {
     this.onGotItem = new Subject();
   }
 
-  // getItemById (id?: string) {
-  //   return this.http.get(this.apiUrl + '/items/get/' + this.OWNER + '/' + (id !== undefined ? id : ''))
-  //     .map((data: Response) => { return data.json(); })
-  //     .catch((err: Response) => {
-  //       return Observable.throw(err)
-  //     });
-  //
-  // }
-
   getItemById(id?: string) {
     return this.http.get(this.apiUrl + '/items/get/' + this.OWNER + '/' + (id !== undefined ? id : ''))
       .subscribe((data: Response) => {
@@ -33,17 +24,6 @@ export class FileSystemService {
         console.log(err.message);
       });
   }
-
-  // getMessages() {
-  //   return this.http.get(this.url + "messages/" + this.id)
-  //     .subscribe((data: Response) => {
-  //       const dataMessages = data.json();
-  //       this.onGotMessages.next(dataMessages);
-  //     }, (err) => {
-  //       this.onGotUsers.next([]);
-  //     });
-  // }
-
 
   createItem (parentId: string, type: string, name: string) {
     return this.http.post(this.apiUrl + '/items/create/', { parentId: parentId, type: type, name: name, owner: this.OWNER })
