@@ -2,6 +2,10 @@
   line-height: 1em;
   user-select: none;
   text-align: center;
+  display: inline-block;
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
 
   .image {
     vertical-align: middle;

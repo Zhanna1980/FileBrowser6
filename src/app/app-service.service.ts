@@ -13,8 +13,4 @@ export class AppService {
     this.onCurrentItemChanged = new Subject();
   }
 
-  // get isFileEditorOpened(): boolean {
-  //   return this.isFileEditorActive;
-  // }
-
 }

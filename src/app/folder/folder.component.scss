@@ -1,43 +1,108 @@
-.folder-container {
-  line-height: 1em;
-  user-select: none;
-  text-align: center;
+//.folder-container {
+//  line-height: 1em;
+//  user-select: none;
+//  text-align: center;
+//
+//  .image {
+//    vertical-align: middle;
+//    width: 32px;
+//    height: 32px;
+//    text-align: right;
+//    background-image: url("../../assets/_images/folder.png");
+//    display: inline-block;
+//    color: blue;
+//    cursor: pointer;
+//  }
+//
+//}
+//
+//ul {
+//  margin-top: 0px;
+//  list-style-type: none;
+//
+//    li {
+//      list-style-type: none;
+//      display: inline-block;
+//      text-align: center;
+//    }
+//}
+//
+//.contentFolder {
+//  ul, li {
+//    margin: 10px;
+//    padding: 10px;
+//  }
+//  .image {
+//    display: block;
+//  }
+//}
 
-  .image {
-    vertical-align: middle;
-    width: 32px;
-    height: 32px;
-    text-align: right;
-    background-image: url("../../assets/_images/folder.png");
-    display: inline-block;
-    color: blue;
-    cursor: pointer;
-  }
+:host {
+    //display: block;
+    //margin-top: 25px;
 
-}
 
-ul {
-  margin-top: 0px;
-  list-style-type: none;
-
-    li {
-      list-style-type: none;
-      display: inline-block;
-      text-align: center;
-    }
-}
-
-.contentFolder {
   .folder-container {
-    margin: 15px;
+    line-height: 1em;
+    user-select: none;
+    .image {
+      vertical-align: middle;
+      width: 32px;
+      height: 32px;
+      text-align: right;
+      background-image: url("../../assets/_images/folder.png");
+      display: inline-block;
+      color: blue;
+      cursor: pointer;
+    }
   }
-  ul, li {
-    margin: 10px;
-    padding: 10px;
+
+  ul {
+      margin-top: 0px;
+      list-style-type: none;
+
+        li {
+          list-style-type: none;
+        }
   }
-  .image {
-    display: block;
+
+  &.contentFolder {
+    background-color: red;
+    display: inline-block;
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+
+    .folder-container {
+      line-height: 1em;
+      user-select: none;
+      text-align: center;
+      display: inline-block;
+      width: 100px;
+
+      .image {
+        //vertical-align: middle;
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        background-image: url("../../assets/_images/folder.png");
+        display: block;
+        margin: auto;
+        color: blue;
+        cursor: pointer;
+      }
+
+    }
+
+    ul {
+      display: inline;
+      li {
+        //float: left;
+        display: inline-block;
+        width: 100px;
+      }
+    }
+
   }
 }
-
-

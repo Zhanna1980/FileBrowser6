@@ -19,7 +19,7 @@ export class FileSystemService {
     return this.http.get(this.apiUrl + '/items/get/' + this.OWNER + '/' + (id !== undefined ? id : ''))
       .subscribe((data: Response) => {
         const response = data.json();
-        this.onGotItem.next(response);
+          this.onGotItem.next(response);
       }, (err) => {
         console.log(err.message);
       });
@@ -34,7 +34,13 @@ export class FileSystemService {
   }
 
   deleteItem (id: string) {
-
+    return this.http.get(this.apiUrl + '/items/delete/' + id)
+      .subscribe((data: Response) => {
+        const response = data.json();
+        this.getItemById(response.parentId);
+      }, (err) => {
+        console.log(err.message);
+      });
   }
 
   updateItem (item: File | Folder) {

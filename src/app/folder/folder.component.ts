@@ -90,19 +90,61 @@ export class FolderComponent implements OnInit, OnDestroy {
   }
 
   newFolder() {
-    console.log(this.folder);
+    this.newSubItem("folder");
   }
 
   newFile() {
+    this.newSubItem("file");
+  }
 
+  newSubItem(type: string) {
+    const itemName = this.promptForName();
+    if (itemName === null) {
+      return;
+    } else {
+      this.fileSystemService.createItem(this.folder._id, type, itemName).subscribe((response) => {
+        if (response.success) {
+          this.getFolder();
+          return;
+        } else {
+          alert (response.message);
+        }
+      });
+    }
+
+  }
+
+  promptForName(defaultName?: string): string {
+    const itemName = prompt("Please enter the name for folder/file", defaultName);
+    if (itemName === null) {
+      return null;
+    }
+    if (itemName.length > 0 && !this.hasSubItemWithName(itemName)) {
+      return itemName;
+    }
+    const alertText = itemName.length === 0 ? "Empty name is not allowed" : "Such item already exists";
+    alert(alertText);
+    this.promptForName(defaultName);
+  }
+
+  hasSubItemWithName (name: string): boolean {
+    for (var i = 0; i < this.folder.children.length; i++) {
+      if (this.folder.children[i].name === name) {
+        return true;
+      }
+    }
+    return false;
   }
 
   rename() {
-
+    const itemName = this.promptForName();
   }
 
   delete() {
-
+    const userConfirmed = confirm("Are you sure?");
+    if (userConfirmed) {
+      this.fileSystemService.deleteItem(this.folder._id);
+    }
   }
 
   getFolder(callback?: Function) {
@@ -114,7 +156,11 @@ export class FolderComponent implements OnInit, OnDestroy {
           callback();
         }
         this.onGotFolderSubscription.unsubscribe();
+      } else if (!response.success) {
+        alert(response.message);
       }
+    }, (err) => {
+      console.log(err.message);
     });
   }
 
