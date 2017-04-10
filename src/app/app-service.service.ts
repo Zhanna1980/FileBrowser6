@@ -7,10 +7,12 @@ import {File} from "./file";
 export class AppService {
 
   onCurrentItemChanged: Subject<Folder | File>;
+  onGotItem: Subject<any>;
   isFileEditorActive = false;
 
   constructor() {
     this.onCurrentItemChanged = new Subject();
+    this.onGotItem = new Subject();
   }
 
 }

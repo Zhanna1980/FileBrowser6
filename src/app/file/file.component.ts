@@ -11,26 +11,29 @@ import {MenuData} from "../menu-data";
   templateUrl: './file.component.html',
   styleUrls: ['./file.component.scss']
 })
-export class FileComponent implements OnInit, OnDestroy {
+export class FileComponent {
   @Input() file: File;
-  private onGotFileSubscription: Subscription;
+  private isSending = false;
 
   constructor(private fileSystemService: FileSystemService, private appService: AppService, private contextMenuService: ContextMenuService) { }
 
-  ngOnInit() {
-
-  }
-
   openFileEditor() {
     this.contextMenuService.hideMenu();
-    this.fileSystemService.getItemById(this.file._id);
-    this.onGotFileSubscription = this.fileSystemService.onGotItem.subscribe((response) => {
-      if (response.success == true && this.file._id === response.item._id) {
-        this.file = response.item;
-        this.appService.onCurrentItemChanged.next(this.file);
-        this.onGotFileSubscription.unsubscribe();
-      }
-    })
+    if (!this.isSending) {
+      this.isSending = true;
+      this.fileSystemService.getItemById(this.file._id).subscribe((response) => {
+        if (response.success) {
+          this.file = response.item;
+          this.appService.onCurrentItemChanged.next(this.file);
+        } else {
+          alert(response.message);
+        }
+      }, (error) => {
+        alert(error);
+      }, () => {
+        this.isSending = false;
+      });
+    }
   }
 
   onContextMenu(event) {
@@ -49,17 +52,23 @@ export class FileComponent implements OnInit, OnDestroy {
   }
 
   rename() {
-
+    let itemName = prompt("Please enter the name for folder/file", this.file.name);
+    if (itemName === null) {
+      return;
+    }
+    this.fileSystemService.updateItem(this.file, itemName).subscribe((response) => {
+      if (response.success) {
+        this.file = response.item;
+      } else {
+        alert (response.message);
+      }
+    }, (error) => {
+      alert(error);
+    });
   }
 
   delete() {
-
-  }
-
-  ngOnDestroy() {
-    if (this.onGotFileSubscription){
-      this.onGotFileSubscription.unsubscribe();
-    }
+    this.fileSystemService.deleteItem(this.file._id);
   }
 
 }

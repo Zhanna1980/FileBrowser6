@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
 })
 export class FileEditorComponent implements OnDestroy {
   @Input() file: File;
-  onGotFileSubscription: Subscription;
+  private isSending = false;
 
   constructor(private fileSystemService: FileSystemService, private appService: AppService) {
 
@@ -22,14 +22,21 @@ export class FileEditorComponent implements OnDestroy {
   }
 
   saveEditedContent() {
-    this.fileSystemService.updateItem(this.file);
-    this.onGotFileSubscription = this.fileSystemService.onGotItem.subscribe((response) => {
-      if (response.success == true && this.file._id === response.item._id) {
-        this.file = response.item;
-        this.appService.isFileEditorActive = false;
-        this.onGotFileSubscription.unsubscribe();
-      }
-    })
+    if (!this.isSending) {
+      this.isSending = true;
+      this.fileSystemService.updateItem(this.file).subscribe((response) => {
+        if (response.success) {
+          this.file = response.item;
+          this.appService.isFileEditorActive = false;
+        } else {
+          alert(response.message);
+        }
+      }, (error) => {
+        alert(error);
+      }, () => {
+        this.isSending = false;
+      });
+    }
   }
 
   onContextMenu(event) {
@@ -38,9 +45,6 @@ export class FileEditorComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.onGotFileSubscription){
-      this.onGotFileSubscription.unsubscribe();
-    }
   }
 
 }

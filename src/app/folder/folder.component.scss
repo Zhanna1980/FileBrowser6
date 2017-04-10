@@ -71,8 +71,6 @@
     display: inline-block;
     width: 100px;
     white-space: nowrap;
-    overflow: hidden;
-    text-align: center;
 
     .folder-container {
       line-height: 1em;
@@ -80,6 +78,10 @@
       text-align: center;
       display: inline-block;
       width: 100px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
 
       .image {
         //vertical-align: middle;
@@ -90,9 +92,7 @@
         display: block;
         margin: auto;
         color: blue;
-        cursor: pointer;
       }
-
     }
 
     ul {

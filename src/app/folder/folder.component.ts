@@ -20,21 +20,21 @@ export class FolderComponent implements OnInit, OnDestroy {
   private expanded: boolean = false;
   private expandSign: string = "";
   private onGotFolderSubscription: Subscription;
-
-  private readonly newFolderMenuEntry: MenuEntry;
-  private readonly newFileMenuEntry: MenuEntry;
-  private readonly renameMenuEntry: MenuEntry;
-  private readonly deleteMenuEntry: MenuEntry;
-
+  private isSending = false;
 
   constructor(private fileSystemService: FileSystemService, private appService: AppService, private contextMenuService: ContextMenuService) {
 
   }
 
   ngOnInit() {
-    if (this.isInTree){
+    if (this.isInTree) {
       this.expandSign = "+";
     }
+    this.onGotFolderSubscription = this.appService.onGotItem.subscribe((item) => {
+      if (item._id == this.folder._id) {
+        this.folder = item;
+      }
+    });
   }
 
   onFolderImageClick(event: Event) {
@@ -98,70 +98,61 @@ export class FolderComponent implements OnInit, OnDestroy {
   }
 
   newSubItem(type: string) {
-    const itemName = this.promptForName();
+    let itemName = prompt("Please enter the name for folder/file");
     if (itemName === null) {
       return;
-    } else {
-      this.fileSystemService.createItem(this.folder._id, type, itemName).subscribe((response) => {
-        if (response.success) {
-          this.getFolder();
-          return;
-        } else {
-          alert (response.message);
-        }
-      });
     }
-
-  }
-
-  promptForName(defaultName?: string): string {
-    const itemName = prompt("Please enter the name for folder/file", defaultName);
-    if (itemName === null) {
-      return null;
-    }
-    if (itemName.length > 0 && !this.hasSubItemWithName(itemName)) {
-      return itemName;
-    }
-    const alertText = itemName.length === 0 ? "Empty name is not allowed" : "Such item already exists";
-    alert(alertText);
-    this.promptForName(defaultName);
-  }
-
-  hasSubItemWithName (name: string): boolean {
-    for (var i = 0; i < this.folder.children.length; i++) {
-      if (this.folder.children[i].name === name) {
-        return true;
+    this.fileSystemService.createItem(this.folder._id, type, itemName).subscribe((response) => {
+      if (response.success) {
+        this.getFolder();
+      } else {
+        alert (response.message);
       }
-    }
-    return false;
+    }, (error) => {
+      alert(error);
+    });
   }
 
   rename() {
-    const itemName = this.promptForName();
+    let itemName = prompt("Please enter a new name for the folder", this.folder.name);
+    if (itemName === null) {
+      return;
+    }
+    this.fileSystemService.updateItem(this.folder, itemName).subscribe((response) => {
+      if (response.success) {
+        this.folder = response.item;
+        this.appService.onGotItem.next(this.folder);
+      } else {
+        alert (response.message);
+      }
+    }, (error) => {
+      alert(error);
+    });
   }
 
   delete() {
-    const userConfirmed = confirm("Are you sure?");
-    if (userConfirmed) {
-      this.fileSystemService.deleteItem(this.folder._id);
-    }
+    this.fileSystemService.deleteItem(this.folder._id);
   }
 
   getFolder(callback?: Function) {
-    this.fileSystemService.getItemById(this.folder._id);
-    this.onGotFolderSubscription = this.fileSystemService.onGotItem.subscribe((response) => {
-      if (response.success == true && this.folder._id === response.item._id) {
-        this.folder = response.item;
-        if (callback) {
-          callback();
+    if (!this.isSending) {
+      this.isSending = true;
+      this.fileSystemService.getItemById(this.folder._id).subscribe((response) => {
+        if (response.success) {
+          this.folder = response.item;
+          this.appService.onGotItem.next(this.folder);
+          if (callback) {
+            callback();
+          }
+        } else {
+          alert(response.message);
         }
-        this.onGotFolderSubscription.unsubscribe();
-      } else if (!response.success) {
-        alert(response.message);
-      }
-    }, (err) => {
-      console.log(err.message);
-    });
+      }, (error) => {
+        alert(error);
+      }, () => {
+          this.isSending = false;
+      });
+    }
   }
 
   ngOnDestroy() {
