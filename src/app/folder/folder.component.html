@@ -1,7 +1,7 @@
 <div *ngIf="folder != undefined">
   <div *ngIf="shouldShowName == true" class="folder-container" (contextmenu)="onContextMenu($event)">
     <span class="image"  (click)="onFolderImageClick($event)">{{expandSign}}</span>
-    <span (click)="onFolderNameClick($event)">{{folder.name}}</span>
+    <span (click)="onFolderNameClick($event)" title={{folder.name}}>{{folder.name}}</span>
   </div>
   <ul *ngIf="expanded || !shouldShowName">
   <li *ngFor="let child of folder.children">

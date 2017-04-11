@@ -1,4 +1,4 @@
 <div class="content-container" *ngIf="currentFolder" (contextmenu)="onContextMenu($event)">
-  <folder *ngIf="!isFileEditorActive" [folder]="currentFolder" [shouldShowName]="false" [isInTree]="false"></folder>
+  <folder *ngIf="!isFileEditorActive" [folder]="currentFolder" [shouldShowName]="false" class="tileList" [isInTree]="false"></folder>
   <file-editor *ngIf="isFileEditorActive" [file]="currentFile"></file-editor>
 </div>
