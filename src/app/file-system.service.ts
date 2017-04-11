@@ -1,9 +1,10 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Folder} from "./folder";
 import {File} from "./file";
 import {Http, Response} from "@angular/http";
-import {Observable, Subject} from "rxjs";
+import {Observable} from "rxjs";
 import {AppService} from "./app-service.service";
+import {HistoryService} from "./history.service";
 
 @Injectable()
 export class FileSystemService {
@@ -12,7 +13,7 @@ export class FileSystemService {
   private readonly apiUrl = "http://hosting.webis.co.il:8085/api";
 
 
-  constructor (private http: Http, private appService: AppService) {
+  constructor (private http: Http, private appService: AppService, private historyService: HistoryService) {
 
   }
 
@@ -38,25 +39,29 @@ export class FileSystemService {
     if (!userConfirmed) {
       return;
     }
-      return this.http.get(this.apiUrl + '/items/delete/' + id)
-        .subscribe((data: Response) => {
-          const response = data.json();
-          if (response.success == true) {
-            this.getItemById(response.parentId).subscribe((response) => {
-              if (response.success) {
-                this.appService.onGotItem.next(response.item);
-              } else {
-                alert(response.message);
+    return this.http.get(this.apiUrl + '/items/delete/' + id)
+      .subscribe((data: Response) => {
+        const response = data.json();
+        if (response.success == true) {
+          this.getItemById(response.parentId).subscribe((response) => {
+            if (response.success) {
+              this.appService.onGotItem.next(response.item);
+              if (this.historyService.currentId === id) {
+                this.historyService.deleteCurrentId(false);
+                this.appService.onCurrentItemChanged.next(response.item);
               }
-            }, (error) => {
-              alert("Failed to connect with server while getting parent folder.");
-            });
-          } else {
-            alert(response.message);
-          }
-        }, (err) => {
-          alert("Failed to connect with server.");
-        });
+            } else {
+              alert(response.message);
+            }
+          }, (error) => {
+            alert("Failed to connect with server while getting parent folder.");
+          });
+        } else {
+          alert(response.message);
+        }
+      }, (err) => {
+        alert("Failed to connect with server.");
+      });
   }
 
   updateItem (item: File | Folder, newName?: string) {

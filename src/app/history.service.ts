@@ -3,7 +3,7 @@ import {AppService} from "./app-service.service";
 import {Subscription} from "rxjs";
 import {Folder} from "./folder";
 import {File} from "./file";
-import {FileSystemService} from "./file-system.service";
+
 
 @Injectable()
 export class HistoryService {
@@ -11,7 +11,7 @@ export class HistoryService {
   private currentItemIndex: number;
   private onGotCurrentItem: Subscription;
 
-  constructor(private appService: AppService, private fileSystemService: FileSystemService) {
+  constructor(private appService: AppService) {
     this.history = [];
     this.currentItemIndex = -1;
     this.onGotCurrentItem = this.appService.onCurrentItemChanged.subscribe((item: Folder | File) => {

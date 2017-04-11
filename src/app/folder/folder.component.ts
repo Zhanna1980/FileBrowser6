@@ -36,7 +36,6 @@ export class FolderComponent implements OnInit, OnDestroy {
       }
       if (this.isInTree && this.appService.treeState.hasOwnProperty(this.folder._id)) {
         this.expanded = this.appService.treeState[this.folder._id];
-        console.log(this.folder.name + " " + this.expanded);
       }
     });
   }
