@@ -34,6 +34,10 @@ export class FolderComponent implements OnInit, OnDestroy {
       if (item._id == this.folder._id) {
         this.folder = item;
       }
+      if (this.isInTree && this.appService.treeState.hasOwnProperty(this.folder._id)) {
+        this.expanded = this.appService.treeState[this.folder._id];
+        console.log(this.folder.name + " " + this.expanded);
+      }
     });
   }
 
@@ -42,6 +46,7 @@ export class FolderComponent implements OnInit, OnDestroy {
     if (this.isInTree) {
       this.contextMenuService.hideMenu();
       this.expanded=!this.expanded;
+      this.appService.treeState[this.folder._id] = this.expanded;
       this.expandSign = this.expanded ? "-" : "+";
       if (this.expanded) {
         this.getFolder();
@@ -140,6 +145,10 @@ export class FolderComponent implements OnInit, OnDestroy {
       this.fileSystemService.getItemById(this.folder._id).subscribe((response) => {
         if (response.success) {
           this.folder = response.item;
+          // if (this.isInTree && this.appService.treeState.hasOwnProperty(this.folder._id)) {
+          //   this.expanded = this.appService.treeState[this.folder._id];
+          //   console.log(this.folder.name + " " + this.expanded);
+          // }
           this.appService.onGotItem.next(this.folder);
           if (callback) {
             callback();
@@ -159,6 +168,10 @@ export class FolderComponent implements OnInit, OnDestroy {
     if (this.onGotFolderSubscription){
       this.onGotFolderSubscription.unsubscribe();
     }
+    // if (this.isInTree) {
+    //   this.appService.treeState[this.folder._id] = this.expanded;
+    //   console.log("save state", this.expanded);
+    // }
   }
 
 }

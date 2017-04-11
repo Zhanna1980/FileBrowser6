@@ -1,5 +1,5 @@
 
-  <button class="btnBack"><</button>
+  <button class="btnBack" [disabled]="!hasBack" (click)="goBack()"><</button>
 
-  <button class="btnForward">></button>
+  <button class="btnForward" [disabled]="!hasForward" (click)="goForward()">></button>
 

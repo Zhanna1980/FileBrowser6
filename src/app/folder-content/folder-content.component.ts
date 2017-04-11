@@ -79,7 +79,6 @@ export class FolderContentComponent implements OnInit, OnDestroy {
     }
   }
 
-
   ngOnDestroy() {
     if (this.onGotCurrentItem) {
       this.onGotCurrentItem.unsubscribe();
