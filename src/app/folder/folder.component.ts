@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {FileSystemService} from "../file-system.service";
 import {Folder} from "../folder";
 import {HistoryService} from "../history.service";
@@ -6,13 +6,14 @@ import {AppService} from "../app-service.service";
 import {Subscription} from "rxjs";
 import {ContextMenuService} from "../context-menu.service";
 import {MenuData, MenuEntry} from "../menu-data";
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'folder',
   templateUrl: './folder.component.html',
   styleUrls: ['./folder.component.scss']
 })
-export class FolderComponent implements OnInit, OnDestroy {
+export class FolderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() folder: Folder;
   @Input() shouldShowName = true;
@@ -34,8 +35,19 @@ export class FolderComponent implements OnInit, OnDestroy {
       if (item._id == this.folder._id) {
         this.folder = item;
       }
-      this.checkForState();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.hasOwnProperty('folder')) {
+      let change = changes['folder'];
+      if (change.isFirstChange() && this.folder != undefined && this.isInTree) {
+        this.checkForState();
+        if (this.expanded) {
+          this.getFolder();
+        }
+      }
+    }
   }
 
   private checkForState() {
@@ -50,7 +62,6 @@ export class FolderComponent implements OnInit, OnDestroy {
   private saveState() {
     if (this.isInTree) {
       this.appService.treeState[this.folder._id] = this.expanded;
-      console.log("save state", this.expanded);
     }
   }
 
@@ -161,7 +172,6 @@ export class FolderComponent implements OnInit, OnDestroy {
       this.fileSystemService.getItemById(this.folder._id).subscribe((response) => {
         if (response.success) {
           this.folder = response.item;
-          this.checkForState();
           this.appService.onGotItem.next(this.folder);
           if (callback) {
             callback();

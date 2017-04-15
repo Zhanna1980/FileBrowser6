@@ -18,7 +18,6 @@ export class FolderTreeComponent implements OnInit {
 
   ngOnInit() {
     this.fileSystemService.getItemById().subscribe((response) => {
-      console.log("in tree");
       if (response.success) {
         this.root = response.item;
         this.appService.onCurrentItemChanged.next(this.root);

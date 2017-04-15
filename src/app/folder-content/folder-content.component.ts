@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Folder} from "../folder";
 import {AppService} from "../app-service.service";
-import {FileSystemService} from "../file-system.service";
-import {HistoryService} from "../history.service";
 import {File} from "../file";
 import {Subscription} from "rxjs";
 import {ContextMenuService} from "../context-menu.service";
@@ -23,7 +21,7 @@ export class FolderContentComponent implements OnInit, OnDestroy {
   @ViewChild(FolderComponent)
   private folder: FolderComponent;
 
-  constructor(private fileSystemService: FileSystemService, private history: HistoryService, private appService: AppService,
+  constructor(private appService: AppService,
   private contextMenuService: ContextMenuService) { }
 
   ngOnInit() {
